@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Create Article | Pressly</title>
+  </head>
+
+  <body>
+    <header>
+<header>
+    <a href="/" aria-label="Pressly home">Pressly</a>
+
+    <nav id="main-navigation" aria-label="Main navigation"></nav>
+  </header>
+
+    <main>
+      <section aria-labelledby="create-article-heading">
+        <h1 id="create-article-heading">Create article</h1>
+
+        <form id="create-article-form">
+          <div>
+            <label for="article-title">Title</label>
+            <input type="text" id="article-title" name="title" required />
+          </div>
+
+          <div>
+            <label for="article-category">Category</label>
+            <input type="text" id="article-category" name="category" required />
+          </div>
+
+          <div>
+            <label for="article-body">Article</label>
+            <textarea
+              id="article-body"
+              name="body"
+              rows="12"
+              required
+            ></textarea>
+          </div>
+
+          <div>
+            <label for="article-image">Image URL</label>
+            <input type="url" id="article-image" name="image_url" />
+          </div>
+
+          <div>
+            <label for="article-tags">Tags</label>
+            <input
+              type="text"
+              id="article-tags"
+              name="tags"
+              placeholder="Norway, Politics, Finance"
+            />
+
+            <p>Separate multiple tags with commas.</p>
+          </div>
+
+          <button type="submit">Publish article</button>
+
+          <p id="create-article-feedback" aria-live="polite"></p>
+        </form>
+      </section>
+    </main>
+
+    <script type="module" src="/src/js/pages/create.js"></script>
+  </body>
+</html>
