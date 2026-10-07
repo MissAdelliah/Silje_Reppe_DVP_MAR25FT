@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Login | Pressly</title>
+  </head>
+
+  <body>
+    <main>
+      <section aria-labelledby="login-heading">
+        <h1 id="login-heading">Login</h1>
+
+        <form id="login-form">
+          <div>
+            <label for="login-email">Email</label>
+            <input
+              type="email"
+              id="login-email"
+              name="email"
+              autocomplete="email"
+              required
+            />
+          </div>
+
+          <div>
+            <label for="login-password">Password</label>
+            <input
+              type="password"
+              id="login-password"
+              name="password"
+              autocomplete="current-password"
+              required
+            />
+          </div>
+
+          <button type="submit">Login</button>
+
+          <p id="login-feedback" aria-live="polite"></p>
+        </form>
+      </section>
+
+      <section aria-labelledby="register-heading">
+        <h2 id="register-heading">Create account</h2>
+
+        <form id="register-form">
+          <div>
+            <label for="register-name">Name</label>
+            <input
+              type="text"
+              id="register-name"
+              name="name"
+              autocomplete="name"
+              required
+            />
+          </div>
+
+          <div>
+            <label for="register-email">Email</label>
+            <input
+              type="email"
+              id="register-email"
+              name="email"
+              autocomplete="email"
+              required
+            />
+          </div>
+
+          <div>
+            <label for="register-password">Password</label>
+            <input
+              type="password"
+              id="register-password"
+              name="password"
+              autocomplete="new-password"
+              minlength="6"
+              required
+            />
+          </div>
+
+          <button type="submit">Register</button>
+
+          <p id="register-feedback" aria-live="polite"></p>
+        </form>
+      </section>
+    </main>
+
+    <script type="module" src="/src/js/pages/login.js"></script>
+  </body>
+</html>
