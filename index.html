@@ -2,11 +2,12 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <meta
       name="description"
-      content="Pressly - browse the latest news, sport, entertainment and weather."
+      content="Pressly - latest news, sport, entertainment and weather."
     />
 
     <title>Pressly</title>
@@ -19,11 +20,11 @@
       <div class="site-header__inner">
         <a class="site-logo" href="/" aria-label="Pressly home"> PRESSLY </a>
 
-        <nav class="primary-navigation" aria-label="Main navigation">
-          <a href="/?category=news">News</a>
-          <a href="/?category=sport">Sport</a>
-          <a href="/?category=entertainment">Entertainment</a>
-          <a href="/?category=weather">Weather</a>
+        <nav class="primary-navigation" aria-label="Primary navigation">
+          <a href="/?category=News">News</a>
+          <a href="/?category=Sport">Sport</a>
+          <a href="/?category=Entertainment"> Entertainment </a>
+          <a href="/?category=Weather">Weather</a>
         </nav>
 
         <div class="header-actions">
@@ -43,51 +44,82 @@
             aria-label="Account navigation"
           ></nav>
         </div>
+
+        <button
+          id="mobile-menu-toggle"
+          class="mobile-menu-toggle"
+          type="button"
+          aria-expanded="false"
+          aria-controls="search-menu"
+          aria-label="Open menu"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
       </div>
     </header>
 
     <div id="search-menu" class="mega-menu" hidden>
       <div class="mega-menu__inner">
-        <div class="mega-menu__categories">
-          <a class="mega-menu__latest" href="/?sort=latest"> Latest news </a>
+        <div class="mega-menu__topics">
+          <a class="mega-menu__latest" href="/"> Latest news </a>
 
           <section class="mega-menu__section">
             <h2>News</h2>
 
-            <nav aria-label="News categories">
-              <a href="/?category=world-news">World News</a>
-              <a href="/?category=local-news">Local News</a>
-              <a href="/?category=middle-east">Middle East</a>
-              <a href="/?category=europe">Europe</a>
-              <a href="/?category=scandinavia">Scandinavia</a>
-              <a href="/?category=politics">Politics</a>
-              <a href="/?category=finance">Finance</a>
-              <a href="/?category=culture">Culture</a>
+            <nav aria-label="News topics">
+              <a href="/?category=News&tag=World%20News"> World News </a>
+
+              <a href="/?category=News&tag=Local%20News"> Local News </a>
+
+              <a href="/?category=News&tag=Middle%20East"> Middle East </a>
+
+              <a href="/?category=News&tag=Europe"> Europe </a>
+
+              <a href="/?category=News&tag=Scandinavia"> Scandinavia </a>
+
+              <a href="/?category=News&tag=Politics"> Politics </a>
+
+              <a href="/?category=News&tag=Finance"> Finance </a>
+
+              <a href="/?category=News&tag=Culture"> Culture </a>
             </nav>
           </section>
 
           <section class="mega-menu__section">
             <h2>Sport</h2>
 
-            <nav aria-label="Sport categories">
-              <a href="/?category=football">Football</a>
-              <a href="/?category=ski">Ski</a>
-              <a href="/?category=handball">Handball</a>
-              <a href="/?category=rowing">Rowing</a>
-              <a href="/?category=f1">F1</a>
+            <nav aria-label="Sport topics">
+              <a href="/?category=Sport&tag=Football"> Football </a>
+
+              <a href="/?category=Sport&tag=Ski"> Ski </a>
+
+              <a href="/?category=Sport&tag=Handball"> Handball </a>
+
+              <a href="/?category=Sport&tag=Rowing"> Rowing </a>
+
+              <a href="/?category=Sport&tag=F1"> F1 </a>
             </nav>
           </section>
 
           <section class="mega-menu__section">
             <h2>Entertainment</h2>
 
-            <nav aria-label="Entertainment categories">
-              <a href="/?category=influencers">Influencers</a>
-              <a href="/?category=tv">TV</a>
-              <a href="/?category=series">Series</a>
-              <a href="/?category=music">Music</a>
-              <a href="/?category=theater">Theater</a>
-              <a href="/?category=movies">Movies</a>
+            <nav aria-label="Entertainment topics">
+              <a href="/?category=Entertainment&tag=Influencers">
+                Influencers
+              </a>
+
+              <a href="/?category=Entertainment&tag=TV"> TV </a>
+
+              <a href="/?category=Entertainment&tag=Series"> Series </a>
+
+              <a href="/?category=Entertainment&tag=Music"> Music </a>
+
+              <a href="/?category=Entertainment&tag=Theater"> Theater </a>
+
+              <a href="/?category=Entertainment&tag=Movies"> Movies </a>
             </nav>
           </section>
         </div>
@@ -100,44 +132,78 @@
 
             <input
               id="site-search"
-              name="search"
+              name="q"
               type="search"
               placeholder="Search"
               autocomplete="off"
             />
 
-            <button type="submit">Search</button>
+            <button class="button-primary" type="submit">Search</button>
           </form>
 
-          <nav class="mega-menu__account" aria-label="Account and site links">
-            <a id="mega-create-link" href="/create.html" hidden>
-              Create Article
-            </a>
-
-            <a href="mailto:tip@pressly.no"> Tip us </a>
-          </nav>
+          <nav
+            id="mega-account-navigation"
+            class="mega-account-navigation"
+            aria-label="Account menu"
+          ></nav>
         </aside>
       </div>
     </div>
 
-    <aside class="breaking-news" aria-label="Breaking news">
+    <aside class="breaking-news" aria-label="Latest news">
       <div class="breaking-news__inner">
         <span class="breaking-news__indicator" aria-hidden="true"></span>
 
         <span class="breaking-news__label"> Just now: </span>
 
-        <a id="breaking-news-link" class="breaking-news__link" href="#"></a>
+        <a id="breaking-news-link" class="breaking-news__link" href="/">
+          No breaking news yet
+        </a>
       </div>
     </aside>
 
     <main class="home">
-      <div class="home__layout">
-        <section class="articles-section" aria-labelledby="articles-heading">
+      <div id="home-layout" class="home-layout">
+        <aside
+          id="saved-topics"
+          class="saved-topics surface"
+          aria-labelledby="saved-topics-heading"
+          hidden
+        >
+          <h2 id="saved-topics-heading">Saved Topics</h2>
+
+          <div id="saved-topics-list"></div>
+
+          <div class="saved-topics__actions">
+            <button id="clear-saved-topics" class="button-text" type="button">
+              Clear all
+            </button>
+
+            <button
+              id="browse-saved-topics"
+              class="button-secondary saved-topics__browse"
+              type="button"
+              aria-pressed="false"
+            >
+              Browse
+            </button>
+          </div>
+
+          <a class="button-primary create-article-link" href="/create.html">
+            Create New Article
+          </a>
+        </aside>
+
+        <section class="article-feed" aria-labelledby="articles-heading">
           <h1 id="articles-heading" class="visually-hidden">Latest articles</h1>
 
-          <div id="articles-list" class="articles-list"></div>
+          <p
+            id="articles-feedback"
+            class="page-feedback"
+            aria-live="polite"
+          ></p>
 
-          <p id="articles-feedback" class="feedback" aria-live="polite"></p>
+          <div id="articles-list" class="articles-list"></div>
         </section>
 
         <aside class="latest-news" aria-labelledby="latest-news-heading">
@@ -149,7 +215,12 @@
 
           <div id="latest-news-list" class="latest-news__list"></div>
 
-          <button id="latest-news-more" class="latest-news__more" type="button">
+          <button
+            id="latest-news-more"
+            class="button-primary latest-news__more"
+            type="button"
+            hidden
+          >
             More
           </button>
         </aside>
