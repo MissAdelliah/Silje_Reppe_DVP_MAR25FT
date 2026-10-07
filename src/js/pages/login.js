@@ -7,6 +7,23 @@ const registerForm = document.querySelector('#register-form');
 const loginFeedback = document.querySelector('#login-feedback');
 const registerFeedback = document.querySelector('#register-feedback');
 
+const authHeading = document.querySelector('#auth-heading');
+const authSwitchButtons = document.querySelectorAll('[data-auth-view]');
+
+function showAuthView(view) {
+  const showRegister = view === 'register';
+
+  loginForm.hidden = showRegister;
+  registerForm.hidden = !showRegister;
+
+  authHeading.textContent = showRegister
+    ? 'Create an account'
+    : 'Log in to continue';
+
+  loginFeedback.textContent = '';
+  registerFeedback.textContent = '';
+}
+
 async function redirectAuthenticatedUser() {
   const session = await getSession();
 
@@ -84,4 +101,15 @@ registerForm.addEventListener('submit', async (event) => {
   }
 });
 
-redirectAuthenticatedUser();
+authSwitchButtons.forEach((button) => {
+  button.addEventListener('click', () => {
+    showAuthView(button.dataset.authView);
+  });
+});
+
+async function init() {
+  initSearchMenu();
+  await redirectAuthenticatedUser();
+}
+
+init();
