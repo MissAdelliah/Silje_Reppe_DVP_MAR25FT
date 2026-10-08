@@ -11,7 +11,7 @@ import { renderNavigation } from '../ui/navigation.js';
 import { initSearchMenu } from '../ui/searchMenu.js';
 
 const SAVED_TOPICS_KEY = 'pressly:saved-topics';
-const INITIAL_LATEST_NEWS_COUNT = 4;
+const LATEST_NEWS_PAGE_SIZE = 4;
 const navigation = document.querySelector('#main-navigation');
 const homeLayout = document.querySelector('#home-layout');
 const savedTopicsPanel = document.querySelector('#saved-topics');
@@ -25,14 +25,10 @@ const latestNewsList = document.querySelector('#latest-news-list');
 const latestNewsMoreButton = document.querySelector('#latest-news-more');
 
 let session = null;
-
 let allArticles = [];
-
 let savedTopics = [];
-
 let browseSavedOnly = false;
-
-let latestNewsCount = INITIAL_LATEST_NEWS_COUNT;
+let latestNewsOffset = 0;
 
 function normalise(value) {
   return String(value ?? '')
@@ -72,12 +68,12 @@ function saveTopics(topics) {
 }
 
 function toggleSavedTopic(topic) {
-  const topicExists = savedTopics.some(
+  const exists = savedTopics.some(
     (savedTopic) =>
       savedTopic.type === topic.type && savedTopic.value === topic.value,
   );
 
-  if (topicExists) {
+  if (exists) {
     saveTopics(
       savedTopics.filter(
         (savedTopic) =>
@@ -110,9 +106,7 @@ function getPageFilters() {
 
 function articleMatchesPageFilters(article) {
   const { query, category, tag } = getPageFilters();
-
   const articleCategory = normalise(article.category);
-
   const articleTags = Array.isArray(article.tags)
     ? article.tags.map(normalise)
     : [];
@@ -147,7 +141,6 @@ function articleMatchesSavedTopics(article) {
   }
 
   const category = normalise(article.category);
-
   const tags = Array.isArray(article.tags) ? article.tags.map(normalise) : [];
 
   return savedTopics.some((topic) => {
@@ -190,6 +183,7 @@ function createSavedTopicButton(topic) {
 
 function createSavedTopicGroup(title, topics) {
   const section = document.createElement('section');
+
   section.className = 'saved-topics__group';
 
   const heading = document.createElement('h3');
@@ -212,7 +206,9 @@ function renderSavedTopics() {
 
   if (!savedTopics.length) {
     const emptyState = document.createElement('p');
+
     emptyState.className = 'saved-topics__empty';
+
     emptyState.textContent =
       'Save categories or tags from articles to see them here.';
 
@@ -225,6 +221,7 @@ function renderSavedTopics() {
   browseSavedTopicsButton.disabled = false;
 
   const categories = savedTopics.filter((topic) => topic.type === 'category');
+
   const tags = savedTopics.filter((topic) => topic.type === 'tag');
 
   if (categories.length) {
@@ -239,6 +236,7 @@ function renderSavedTopics() {
 function renderAuthenticatedLayout() {
   if (!session) {
     savedTopicsPanel.hidden = true;
+
     homeLayout.classList.remove('home-layout--authenticated');
 
     return;
@@ -258,13 +256,11 @@ function renderArticleFeed() {
 
   renderArticles(articlesList, visibleArticles, {
     canSaveTopics: Boolean(session),
-
     savedTopics,
   });
 
   if (visibleArticles.length) {
     articlesFeedback.textContent = '';
-
     return;
   }
 
@@ -290,11 +286,32 @@ function renderBreakingNewsBar() {
 }
 
 function renderLatestNewsPanel() {
-  const latestArticles = allArticles.slice(0, latestNewsCount);
+  latestNewsList.replaceChildren();
 
-  renderLatestNews(latestNewsList, latestArticles);
+  if (!allArticles.length) {
+    latestNewsMoreButton.hidden = true;
+    return;
+  }
 
-  latestNewsMoreButton.hidden = latestNewsCount >= allArticles.length;
+  const latestArticles = allArticles.slice(
+    latestNewsOffset,
+    latestNewsOffset + LATEST_NEWS_PAGE_SIZE,
+  );
+
+  renderLatestNews(latestNewsList, latestArticles, {
+    newestArticleId: allArticles[0].id,
+  });
+
+  latestNewsMoreButton.hidden = allArticles.length <= LATEST_NEWS_PAGE_SIZE;
+
+  if (latestNewsMoreButton.hidden) {
+    return;
+  }
+
+  const reachedEnd =
+    latestNewsOffset + LATEST_NEWS_PAGE_SIZE >= allArticles.length;
+
+  latestNewsMoreButton.textContent = reachedEnd ? 'Back to latest' : 'More';
 }
 
 function handleArticleTopicClick(event) {
@@ -352,8 +369,8 @@ function handleBrowseSavedTopics() {
 }
 
 function handleMoreLatestNews() {
-  latestNewsCount += INITIAL_LATEST_NEWS_COUNT;
-
+  const nextOffset = latestNewsOffset + LATEST_NEWS_PAGE_SIZE;
+  latestNewsOffset = nextOffset >= allArticles.length ? 0 : nextOffset;
   renderLatestNewsPanel();
 }
 
@@ -372,7 +389,7 @@ async function loadAuthentication() {
     session = null;
   }
 
-  await renderNavigation(navigation);
+  await renderNavigation(navigation, session);
 
   savedTopics = session ? getSavedTopics() : [];
 
@@ -397,7 +414,6 @@ async function loadArticles() {
 
 async function init() {
   initSearchMenu();
-
   bindEvents();
 
   await loadAuthentication();

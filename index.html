@@ -21,10 +21,13 @@
         <a class="site-logo" href="/" aria-label="Pressly home"> PRESSLY </a>
 
         <nav class="primary-navigation" aria-label="Primary navigation">
-          <a href="/?category=News">News</a>
-          <a href="/?category=Sport">Sport</a>
+          <a href="/?category=News"> News </a>
+
+          <a href="/?category=Sport"> Sport </a>
+
           <a href="/?category=Entertainment"> Entertainment </a>
-          <a href="/?category=Weather">Weather</a>
+
+          <a href="/?category=Weather"> Weather </a>
         </nav>
 
         <div class="header-actions">
@@ -137,15 +140,22 @@
               placeholder="Search"
               autocomplete="off"
             />
-
-            <button class="button-primary" type="submit">Search</button>
           </form>
 
-          <nav
+          <div
             id="mega-account-navigation"
             class="mega-account-navigation"
-            aria-label="Account menu"
-          ></nav>
+            role="navigation"
+            aria-label="Account and help links"
+          ></div>
+
+          <div class="mega-menu__utility-links">
+            <a href="mailto:tip@pressly.no"> Tip us </a>
+
+            <span> Terms &amp; Conditions </span>
+
+            <span> About us </span>
+          </div>
         </aside>
       </div>
     </div>
@@ -166,7 +176,7 @@
       <div id="home-layout" class="home-layout">
         <aside
           id="saved-topics"
-          class="saved-topics surface"
+          class="saved-topics"
           aria-labelledby="saved-topics-heading"
           hidden
         >
@@ -181,7 +191,7 @@
 
             <button
               id="browse-saved-topics"
-              class="button-secondary saved-topics__browse"
+              class="saved-topics__browse"
               type="button"
               aria-pressed="false"
             >
@@ -189,7 +199,7 @@
             </button>
           </div>
 
-          <a class="button-primary create-article-link" href="/create.html">
+          <a class="create-article-link" href="/create.html">
             Create New Article
           </a>
         </aside>
@@ -217,7 +227,7 @@
 
           <button
             id="latest-news-more"
-            class="button-primary latest-news__more"
+            class="latest-news__more"
             type="button"
             hidden
           >

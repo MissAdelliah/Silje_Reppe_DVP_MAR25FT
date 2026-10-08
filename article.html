@@ -1,5 +1,224 @@
-<header>
-  <a href="/" aria-label="Pressly home">Pressly</a>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
 
-  <nav id="main-navigation" aria-label="Main navigation"></nav>
-</header>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <meta
+      name="description"
+      content="Read the latest news and articles from Pressly."
+    />
+
+    <title>Article | Pressly</title>
+
+    <link rel="stylesheet" href="/src/css/style.css" />
+  </head>
+
+  <body>
+    <header class="site-header">
+      <div class="site-header__inner">
+        <a class="site-logo" href="/" aria-label="Pressly home"> PRESSLY </a>
+
+        <nav class="primary-navigation" aria-label="Primary navigation">
+          <a href="/?category=News">News</a>
+          <a href="/?category=Sport">Sport</a>
+          <a href="/?category=Entertainment">Entertainment</a>
+          <a href="/?category=Weather">Weather</a>
+        </nav>
+
+        <div class="header-actions">
+          <button
+            id="search-menu-toggle"
+            class="search-menu-toggle"
+            type="button"
+            aria-expanded="false"
+            aria-controls="search-menu"
+          >
+            Search
+          </button>
+
+          <nav
+            id="main-navigation"
+            class="user-navigation"
+            aria-label="Account navigation"
+          ></nav>
+        </div>
+
+        <button
+          id="mobile-menu-toggle"
+          class="mobile-menu-toggle"
+          type="button"
+          aria-expanded="false"
+          aria-controls="search-menu"
+          aria-label="Open menu"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </header>
+
+    <div id="search-menu" class="mega-menu" hidden>
+      <div class="mega-menu__inner">
+        <div class="mega-menu__topics">
+          <a class="mega-menu__latest" href="/">Latest news</a>
+
+          <section class="mega-menu__section">
+            <h2>News</h2>
+
+            <nav aria-label="News topics">
+              <a href="/?category=News&tag=World%20News">World News</a>
+              <a href="/?category=News&tag=Local%20News">Local News</a>
+              <a href="/?category=News&tag=Middle%20East">Middle East</a>
+              <a href="/?category=News&tag=Europe">Europe</a>
+              <a href="/?category=News&tag=Scandinavia">Scandinavia</a>
+              <a href="/?category=News&tag=Politics">Politics</a>
+              <a href="/?category=News&tag=Finance">Finance</a>
+              <a href="/?category=News&tag=Culture">Culture</a>
+            </nav>
+          </section>
+
+          <section class="mega-menu__section">
+            <h2>Sport</h2>
+
+            <nav aria-label="Sport topics">
+              <a href="/?category=Sport&tag=Football">Football</a>
+              <a href="/?category=Sport&tag=Ski">Ski</a>
+              <a href="/?category=Sport&tag=Handball">Handball</a>
+              <a href="/?category=Sport&tag=Rowing">Rowing</a>
+              <a href="/?category=Sport&tag=F1">F1</a>
+            </nav>
+          </section>
+
+          <section class="mega-menu__section">
+            <h2>Entertainment</h2>
+
+            <nav aria-label="Entertainment topics">
+              <a href="/?category=Entertainment&tag=Influencers">
+                Influencers
+              </a>
+              <a href="/?category=Entertainment&tag=TV">TV</a>
+              <a href="/?category=Entertainment&tag=Series">Series</a>
+              <a href="/?category=Entertainment&tag=Music">Music</a>
+              <a href="/?category=Entertainment&tag=Theater">Theater</a>
+              <a href="/?category=Entertainment&tag=Movies">Movies</a>
+            </nav>
+          </section>
+        </div>
+
+        <aside class="mega-menu__sidebar">
+          <form class="mega-menu__search" action="/" method="get" role="search">
+            <label class="visually-hidden" for="site-search">
+              Search Pressly
+            </label>
+
+            <input
+              id="site-search"
+              name="q"
+              type="search"
+              placeholder="Search"
+              autocomplete="off"
+            />
+
+            <button class="button-primary" type="submit">Search</button>
+          </form>
+
+          <nav
+            id="mega-account-navigation"
+            class="mega-account-navigation"
+            aria-label="Account navigation"
+          ></nav>
+        </aside>
+      </div>
+    </div>
+
+    <aside class="breaking-news" aria-label="Latest news">
+      <div class="breaking-news__inner">
+        <span class="breaking-news__indicator" aria-hidden="true"></span>
+
+        <span class="breaking-news__label">Just now:</span>
+
+        <a id="breaking-news-link" class="breaking-news__link" href="/">
+          No breaking news yet
+        </a>
+      </div>
+    </aside>
+
+    <main class="article-page">
+      <div id="article-layout" class="article-layout">
+        <aside
+          id="saved-topics"
+          class="saved-topics surface"
+          aria-labelledby="saved-topics-heading"
+          hidden
+        >
+          <h2 id="saved-topics-heading">Saved Topics</h2>
+
+          <div id="saved-topics-list"></div>
+
+          <div class="saved-topics__actions">
+            <button id="clear-saved-topics" class="button-text" type="button">
+              Clear all
+            </button>
+
+            <button
+              id="browse-saved-topics"
+              class="button-secondary saved-topics__browse"
+              type="button"
+            >
+              Browse
+            </button>
+          </div>
+
+          <a class="button-primary create-article-link" href="/create.html">
+            Create New Article
+          </a>
+        </aside>
+
+        <article
+          id="article-detail"
+          class="article-detail"
+          aria-busy="true"
+          aria-live="polite"
+        >
+          <p class="page-feedback">Loading article...</p>
+        </article>
+
+        <aside class="latest-news" aria-labelledby="latest-news-heading">
+          <div class="latest-news__header">
+            <h2 id="latest-news-heading">LATEST NEWS:</h2>
+
+            <a href="mailto:tip@pressly.no">TIP: email</a>
+          </div>
+
+          <div id="latest-news-list" class="latest-news__list"></div>
+
+          <button
+            id="latest-news-more"
+            class="button-primary latest-news__more"
+            type="button"
+            hidden
+          >
+            More
+          </button>
+        </aside>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <div class="site-footer__inner">
+        <a class="site-footer__logo" href="/" aria-label="Pressly home">
+          PRESSLY
+        </a>
+
+        <a href="mailto:tip@pressly.no">TIP: LogoTip@mail.com</a>
+
+        <p>All rights reserved</p>
+      </div>
+    </footer>
+
+    <script type="module" src="/src/js/pages/article.js"></script>
+  </body>
+</html>

@@ -3,12 +3,19 @@ import { createArticle } from '../services/articles.js';
 import { renderNavigation } from '../ui/navigation.js';
 import { initSearchMenu } from '../ui/searchMenu.js';
 
+const SUCCESS_REDIRECT_DELAY = 1200;
 const navigation = document.querySelector('#main-navigation');
 const form = document.querySelector('#create-article-form');
 const feedback = document.querySelector('#create-article-feedback');
 const imageInput = document.querySelector('#article-image');
 const imagePreview = document.querySelector('#article-image-preview');
 const imagePlaceholder = document.querySelector('#article-image-placeholder');
+
+function wait(milliseconds) {
+  return new Promise((resolve) => {
+    window.setTimeout(resolve, milliseconds);
+  });
+}
 
 function parseTags(value) {
   return [
@@ -25,10 +32,7 @@ function updateImagePreview() {
   const imageUrl = imageInput.value.trim();
 
   if (!imageUrl) {
-    imagePreview.hidden = true;
-    imagePreview.removeAttribute('src');
-    imagePlaceholder.hidden = false;
-
+    resetImagePreview();
     return;
   }
 
@@ -59,19 +63,30 @@ async function handleSubmit(event, session) {
   const imageUrl = String(formData.get('image_url') ?? '').trim();
   const tags = parseTags(String(formData.get('tags') ?? ''));
 
-  if (!title || !body || !category) {
-    feedback.textContent =
-      'Please complete the title, category and article text.';
+  if (!title) {
+    feedback.textContent = 'Please enter an article title.';
 
     return;
   }
 
-  feedback.textContent = '';
+  if (!category) {
+    feedback.textContent = 'Please select a category.';
+
+    return;
+  }
+
+  if (!body) {
+    feedback.textContent = 'Please enter the article text.';
+
+    return;
+  }
+
+  feedback.textContent = 'Publishing your article...';
 
   setSubmitting(submitButton, true);
 
   try {
-    await createArticle({
+    const publishedArticle = await createArticle({
       title,
       body,
       category,
@@ -80,14 +95,24 @@ async function handleSubmit(event, session) {
       submitted_by: session.user.id,
     });
 
-    form.reset();
-    resetImagePreview();
+    feedback.textContent =
+      'Article published successfully. Opening your article...';
 
-    feedback.textContent = 'Article published successfully.';
+    await wait(SUCCESS_REDIRECT_DELAY);
 
-    window.location.assign('/');
-  } catch {
-    feedback.textContent = 'Unable to publish the article. Please try again.';
+    window.location.assign(
+      `/article.html?id=${encodeURIComponent(publishedArticle.id)}`,
+    );
+  } catch (error) {
+    const isPermissionError =
+      error?.code === '42501' ||
+      String(error?.message ?? '')
+        .toLowerCase()
+        .includes('row-level security');
+
+    feedback.textContent = isPermissionError
+      ? 'You do not have permission to publish this article.'
+      : 'Unable to publish the article. Please try again.';
 
     setSubmitting(submitButton, false);
   }
@@ -102,15 +127,10 @@ async function init() {
 
   initSearchMenu();
 
-  await renderNavigation(navigation);
+  await renderNavigation(navigation, session);
 
   imageInput?.addEventListener('input', updateImagePreview);
-
-  imagePreview?.addEventListener('error', () => {
-    imagePreview.hidden = true;
-    imagePlaceholder.hidden = false;
-  });
-
+  imagePreview?.addEventListener('error', resetImagePreview);
   form?.addEventListener('submit', (event) => handleSubmit(event, session));
 }
 
