@@ -1,22 +1,22 @@
 import { getSession, login, register } from '../services/auth.js';
-
 import {
   validateEmail,
   validateLoginPassword,
   validateName,
   validateRegistrationPassword,
 } from '../utils/validation.js';
-
 import {
   clearFeedback,
   clearFieldState,
   showFeedback,
   showFieldState,
 } from '../ui/feedback.js';
-
+import { initMobileMenu } from '../ui/mobileMenu.js';
+import { renderNavigation } from '../ui/navigation.js';
 import { initSearchMenu } from '../ui/searchMenu.js';
 
 const LOGIN_REDIRECT_DELAY = 1500;
+const navigation = document.querySelector('#main-navigation');
 const loginForm = document.querySelector('#login-form');
 const registerForm = document.querySelector('#register-form');
 const authHeading = document.querySelector('#auth-heading');
@@ -37,6 +37,7 @@ const registerPasswordMessage = document.querySelector(
 );
 
 const authSwitchButtons = document.querySelectorAll('[data-auth-view]');
+
 const passwordToggleButtons = document.querySelectorAll(
   '[data-password-toggle]',
 );
@@ -45,6 +46,18 @@ function wait(milliseconds) {
   return new Promise((resolve) => {
     window.setTimeout(resolve, milliseconds);
   });
+}
+
+function getRedirectTarget() {
+  const params = new URLSearchParams(window.location.search);
+
+  const redirect = params.get('redirect');
+
+  if (redirect === 'create.html') {
+    return './create.html';
+  }
+
+  return './';
 }
 
 function setFieldValidation(
@@ -118,6 +131,7 @@ function validateRegisterPasswordField() {
 function validateLoginForm() {
   const emailValid = validateLoginEmailField();
   const passwordValid = validateLoginPasswordField();
+
   return emailValid && passwordValid;
 }
 
@@ -125,6 +139,7 @@ function validateRegisterForm() {
   const nameValid = validateRegisterNameField();
   const emailValid = validateRegisterEmailField();
   const passwordValid = validateRegisterPasswordField();
+
   return nameValid && emailValid && passwordValid;
 }
 
@@ -143,6 +158,7 @@ function resetRegisterFormState() {
 
 function showAuthView(view) {
   const showRegister = view === 'register';
+
   loginForm.hidden = showRegister;
   registerForm.hidden = !showRegister;
 
@@ -165,8 +181,8 @@ function showAuthView(view) {
   loginEmail.focus();
 }
 
-function setSubmitting(form, isSubmitting, labels) {
-  const button = form.querySelector('button[type="submit"]');
+function setSubmitting(formElement, isSubmitting, labels) {
+  const button = formElement.querySelector('button[type="submit"]');
 
   if (!button) {
     return;
@@ -231,6 +247,7 @@ function togglePasswordVisibility(button) {
 
   const passwordIsHidden = input.type === 'password';
   input.type = passwordIsHidden ? 'text' : 'password';
+
   button.setAttribute('aria-pressed', String(passwordIsHidden));
   button.setAttribute(
     'aria-label',
@@ -279,7 +296,7 @@ loginForm.addEventListener('submit', async (event) => {
 
     await wait(LOGIN_REDIRECT_DELAY);
 
-    window.location.replace('./');
+    window.location.replace(getRedirectTarget());
   } catch (error) {
     showFeedback(loginFeedback, getLoginErrorMessage(error), 'error');
 
@@ -330,7 +347,6 @@ registerForm.addEventListener('submit', async (event) => {
     clearFieldState(registerName, registerNameMessage);
     clearFieldState(registerEmail, registerEmailMessage);
     clearFieldState(registerPassword, registerPasswordMessage);
-
     setSubmitting(registerForm, false, {
       idle: 'Register',
       loading: 'Creating account...',
@@ -350,31 +366,26 @@ loginPassword.addEventListener('blur', validateLoginPasswordField);
 registerName.addEventListener('blur', validateRegisterNameField);
 registerEmail.addEventListener('blur', validateRegisterEmailField);
 registerPassword.addEventListener('blur', validateRegisterPasswordField);
-
 loginEmail.addEventListener('input', () => {
   clearFeedback(loginFeedback);
 
   revalidateIfTouched(loginEmail, validateLoginEmailField);
 });
-
 loginPassword.addEventListener('input', () => {
   clearFeedback(loginFeedback);
 
   revalidateIfTouched(loginPassword, validateLoginPasswordField);
 });
-
 registerName.addEventListener('input', () => {
   clearFeedback(registerFeedback);
 
   revalidateIfTouched(registerName, validateRegisterNameField);
 });
-
 registerEmail.addEventListener('input', () => {
   clearFeedback(registerFeedback);
 
   revalidateIfTouched(registerEmail, validateRegisterEmailField);
 });
-
 registerPassword.addEventListener('input', () => {
   clearFeedback(registerFeedback);
 
@@ -395,17 +406,21 @@ passwordToggleButtons.forEach((button) => {
 
 async function init() {
   initSearchMenu();
+  initMobileMenu();
 
   try {
     const session = await getSession();
 
     if (session) {
-      window.location.replace('./');
+      window.location.replace(getRedirectTarget());
+
+      return;
     }
   } catch {
-    // Leave the login page usable if the
-    // initial session request fails.
+    // Keep the login page usable if the session check fails.
   }
+
+  await renderNavigation(navigation, null);
 }
 
 init();

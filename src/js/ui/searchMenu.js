@@ -7,11 +7,20 @@ export function initSearchMenu() {
     return;
   }
 
+  if (toggle.dataset.searchMenuInitialized === 'true') {
+    return;
+  }
+
+  toggle.dataset.searchMenuInitialized = 'true';
+
+  function isOpen() {
+    return !menu.hidden;
+  }
+
   function openMenu() {
     menu.hidden = false;
     toggle.setAttribute('aria-expanded', 'true');
     document.body.classList.add('search-menu-open');
-
     window.requestAnimationFrame(() => {
       searchInput?.focus();
     });
@@ -28,25 +37,39 @@ export function initSearchMenu() {
   }
 
   toggle.addEventListener('click', () => {
-    if (menu.hidden) {
-      openMenu();
+    if (isOpen()) {
+      closeMenu();
       return;
     }
 
-    closeMenu();
+    openMenu();
   });
 
   menu.addEventListener('click', (event) => {
-    if (event.target.closest('a')) {
-      closeMenu({
-        restoreFocus: false,
-      });
+    const link = event.target.closest('a');
+
+    if (!link) {
+      return;
     }
+
+    closeMenu({
+      restoreFocus: false,
+    });
   });
 
   document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape' && !menu.hidden) {
+    if (event.key === 'Escape' && isOpen()) {
       closeMenu();
+    }
+  });
+
+  const mobileQuery = window.matchMedia('(max-width: 43.75rem)');
+
+  mobileQuery.addEventListener('change', (event) => {
+    if (event.matches && isOpen()) {
+      closeMenu({
+        restoreFocus: false,
+      });
     }
   });
 }

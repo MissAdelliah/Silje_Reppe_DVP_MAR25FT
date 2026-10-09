@@ -4,7 +4,8 @@ export async function requireAuth() {
   const session = await getSession();
 
   if (!session) {
-    window.location.replace('./login.html');
+    window.location.replace('./login.html?redirect=create.html');
+
     return null;
   }
 

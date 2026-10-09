@@ -4,6 +4,20 @@ const FEEDBACK_ICONS = {
   info: 'info',
 };
 
+function getFeedbackState(state) {
+  return Object.hasOwn(FEEDBACK_ICONS, state) ? state : 'info';
+}
+
+function createFeedbackIcon(iconName, className) {
+  const icon = document.createElement('span');
+
+  icon.className = `material-symbols-rounded ${className}`;
+  icon.setAttribute('aria-hidden', 'true');
+  icon.textContent = iconName;
+
+  return icon;
+}
+
 export function clearFeedback(element) {
   if (!element) {
     return;
@@ -19,17 +33,21 @@ export function showFeedback(element, message, state = 'info') {
     return;
   }
 
-  element.replaceChildren();
-  element.dataset.state = state;
-  element.setAttribute('role', state === 'error' ? 'alert' : 'status');
+  const feedbackState = getFeedbackState(state);
 
-  const icon = document.createElement('span');
-  icon.className = 'material-symbols-rounded feedback__icon';
-  icon.setAttribute('aria-hidden', 'true');
-  icon.textContent = FEEDBACK_ICONS[state] ?? FEEDBACK_ICONS.info;
+  element.replaceChildren();
+  element.dataset.state = feedbackState;
+
+  element.setAttribute('role', feedbackState === 'error' ? 'alert' : 'status');
+
+  const icon = createFeedbackIcon(
+    FEEDBACK_ICONS[feedbackState],
+    'feedback__icon',
+  );
 
   const text = document.createElement('span');
   text.textContent = message;
+
   element.append(icon, text);
 }
 
@@ -40,6 +58,7 @@ export function clearFieldState(input, messageElement) {
 
   input.removeAttribute('aria-invalid');
   input.removeAttribute('data-state');
+
   messageElement.replaceChildren();
   messageElement.removeAttribute('data-state');
 }
@@ -49,10 +68,12 @@ export function showFieldState(input, messageElement, { state, message }) {
     return;
   }
 
-  input.dataset.state = state;
-  messageElement.dataset.state = state;
+  const fieldState = state === 'success' ? 'success' : 'error';
 
-  if (state === 'error') {
+  input.dataset.state = fieldState;
+  messageElement.dataset.state = fieldState;
+
+  if (fieldState === 'error') {
     input.setAttribute('aria-invalid', 'true');
   } else {
     input.removeAttribute('aria-invalid');
@@ -60,12 +81,13 @@ export function showFieldState(input, messageElement, { state, message }) {
 
   messageElement.replaceChildren();
 
-  const icon = document.createElement('span');
-  icon.className = 'material-symbols-rounded field-message__icon';
-  icon.setAttribute('aria-hidden', 'true');
-  icon.textContent = state === 'success' ? 'check_circle' : 'error';
+  const icon = createFeedbackIcon(
+    fieldState === 'success' ? FEEDBACK_ICONS.success : FEEDBACK_ICONS.error,
+    'field-message__icon',
+  );
 
   const text = document.createElement('span');
   text.textContent = message;
+
   messageElement.append(icon, text);
 }
