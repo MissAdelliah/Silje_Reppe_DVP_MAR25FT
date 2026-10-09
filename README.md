@@ -152,5 +152,6 @@ AI
 AI was used to help debug routing and path problems that appeared after deployment to GitHub Pages.
 - Supabase learning and setup
 AI was used for guidance while learning how Supabase works with a frontend application and find my way through supabase when Moodle content is heavy.
+AI help me structure/wording the README
 
 The final application was tested through the browser during development, including both local development and the deployed GitHub Pages version.
