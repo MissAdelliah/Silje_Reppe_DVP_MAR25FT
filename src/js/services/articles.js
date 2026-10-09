@@ -12,7 +12,7 @@ export async function getArticles() {
     throw error;
   }
 
-  return data;
+  return data ?? [];
 }
 
 export async function getArticleById(articleId) {

@@ -7,6 +7,12 @@ export function initMobileMenu() {
     return;
   }
 
+  if (toggle.dataset.mobileMenuInitialized === 'true') {
+    return;
+  }
+
+  toggle.dataset.mobileMenuInitialized = 'true';
+
   function isOpen() {
     return toggle.getAttribute('aria-expanded') === 'true';
   }
@@ -17,14 +23,16 @@ export function initMobileMenu() {
 
     toggle.setAttribute('aria-expanded', 'true');
     toggle.setAttribute('aria-label', 'Close menu');
-
     document.body.classList.add('mobile-menu-open');
+
+    const firstFocusableItem = menu.querySelector('a, button:not([disabled])');
+
+    firstFocusableItem?.focus();
   }
 
   function closeMenu({ restoreFocus = true } = {}) {
     menu.hidden = true;
     backdrop.hidden = true;
-
     toggle.setAttribute('aria-expanded', 'false');
     toggle.setAttribute('aria-label', 'Open menu');
 
@@ -51,11 +59,13 @@ export function initMobileMenu() {
   menu.addEventListener('click', (event) => {
     const navigationItem = event.target.closest('a, [data-logout]');
 
-    if (navigationItem) {
-      closeMenu({
-        restoreFocus: false,
-      });
+    if (!navigationItem) {
+      return;
     }
+
+    closeMenu({
+      restoreFocus: false,
+    });
   });
 
   document.addEventListener('keydown', (event) => {

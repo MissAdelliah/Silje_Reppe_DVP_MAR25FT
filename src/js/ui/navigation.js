@@ -1,11 +1,10 @@
 import { getSession, logout } from '../services/auth.js';
 
-function getAppUrl(path = '') {
-  const baseUrl = import.meta.env.BASE_URL || '/';
-  const cleanPath = String(path).replace(/^\/+/, '');
-
-  return `${baseUrl}${cleanPath}`;
-}
+const ROUTES = {
+  home: './',
+  login: './login.html',
+  create: './create.html',
+};
 
 function createLink(href, label) {
   const link = document.createElement('a');
@@ -34,8 +33,7 @@ function renderHeaderNavigation(container, session) {
   container.replaceChildren();
 
   if (!session) {
-    container.append(createLink(getAppUrl('login.html'), 'Login'));
-
+    container.append(createLink(ROUTES.login, 'Login'));
     return;
   }
 
@@ -51,7 +49,7 @@ function renderDesktopMegaNavigation(container, session) {
 
   if (session) {
     container.append(
-      createLink(getAppUrl('create.html'), 'Create Article'),
+      createLink(ROUTES.create, 'Create Article'),
       createLink('mailto:tip@pressly.no?subject=Pressly%20Information', 'Info'),
       createLink('mailto:tip@pressly.no?subject=Pressly%20Help', 'Help'),
     );
@@ -73,13 +71,12 @@ function renderMobileNavigation(container, session) {
   container.replaceChildren();
 
   if (!session) {
-    container.append(createLink(getAppUrl('login.html'), 'Login'));
-
+    container.append(createLink(ROUTES.login, 'Login'));
     return;
   }
 
   container.append(
-    createLink(getAppUrl('create.html'), 'Create Article'),
+    createLink(ROUTES.create, 'Create Article'),
     createLogoutButton(),
   );
 }
@@ -93,12 +90,13 @@ function bindLogoutButtons() {
     }
 
     button.dataset.logoutBound = 'true';
+
     button.addEventListener('click', async () => {
       button.disabled = true;
 
       try {
         await logout();
-        window.location.replace(getAppUrl());
+        window.location.replace(ROUTES.home);
       } catch {
         button.disabled = false;
       }
@@ -126,6 +124,7 @@ export async function renderNavigation(container, providedSession = undefined) {
   renderHeaderNavigation(container, session);
   renderDesktopMegaNavigation(desktopMegaNavigation, session);
   renderMobileNavigation(mobileNavigation, session);
+
   bindLogoutButtons();
 
   return session;

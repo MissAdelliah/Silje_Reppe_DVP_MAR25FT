@@ -1,13 +1,11 @@
 import { getArticles } from '../services/articles.js';
 import { getSession } from '../services/auth.js';
 import { initMobileMenu } from '../ui/mobileMenu.js';
-
 import {
   renderArticles,
   renderBreakingNews,
   renderLatestNews,
 } from '../ui/articles.js';
-
 import { renderNavigation } from '../ui/navigation.js';
 import { initSearchMenu } from '../ui/searchMenu.js';
 
@@ -107,7 +105,9 @@ function getPageFilters() {
 
 function articleMatchesPageFilters(article) {
   const { query, category, tag } = getPageFilters();
+
   const articleCategory = normalise(article.category);
+
   const articleTags = Array.isArray(article.tags)
     ? article.tags.map(normalise)
     : [];
@@ -142,6 +142,7 @@ function articleMatchesSavedTopics(article) {
   }
 
   const category = normalise(article.category);
+
   const tags = Array.isArray(article.tags) ? article.tags.map(normalise) : [];
 
   return savedTopics.some((topic) => {
@@ -174,9 +175,13 @@ function createSavedTopicButton(topic) {
 
   button.type = 'button';
   button.className = 'topic-pill';
+
   button.dataset.removeTopic = topic.value;
+
   button.dataset.topicType = topic.type;
+
   button.textContent = topic.value;
+
   button.setAttribute('aria-label', `Remove ${topic.value} from saved topics`);
 
   return button;
@@ -188,9 +193,11 @@ function createSavedTopicGroup(title, topics) {
   section.className = 'saved-topics__group';
 
   const heading = document.createElement('h3');
+
   heading.textContent = title;
 
   const list = document.createElement('div');
+
   list.className = 'saved-topics__pills';
 
   topics.forEach((topic) => {
@@ -214,6 +221,7 @@ function renderSavedTopics() {
       'Save categories or tags from articles to see them here.';
 
     savedTopicsList.append(emptyState);
+
     browseSavedTopicsButton.disabled = true;
 
     return;
@@ -244,11 +252,13 @@ function renderAuthenticatedLayout() {
   }
 
   savedTopicsPanel.hidden = false;
+
   homeLayout.classList.add('home-layout--authenticated');
 
   renderSavedTopics();
 
   browseSavedTopicsButton.setAttribute('aria-pressed', String(browseSavedOnly));
+
   browseSavedTopicsButton.textContent = browseSavedOnly ? 'Show all' : 'Browse';
 }
 
@@ -278,7 +288,7 @@ function renderBreakingNewsBar() {
   if (!allArticles.length) {
     breakingNewsLink.textContent = 'No breaking news yet';
 
-    breakingNewsLink.href = '/';
+    breakingNewsLink.href = './';
 
     return;
   }
@@ -371,15 +381,21 @@ function handleBrowseSavedTopics() {
 
 function handleMoreLatestNews() {
   const nextOffset = latestNewsOffset + LATEST_NEWS_PAGE_SIZE;
+
   latestNewsOffset = nextOffset >= allArticles.length ? 0 : nextOffset;
+
   renderLatestNewsPanel();
 }
 
 function bindEvents() {
   articlesList.addEventListener('click', handleArticleTopicClick);
+
   savedTopicsList.addEventListener('click', handleSavedTopicClick);
+
   clearSavedTopicsButton.addEventListener('click', handleClearSavedTopics);
+
   browseSavedTopicsButton.addEventListener('click', handleBrowseSavedTopics);
+
   latestNewsMoreButton.addEventListener('click', handleMoreLatestNews);
 }
 

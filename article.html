@@ -2,36 +2,33 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
     <meta
       name="description"
       content="Read the latest news and articles from Pressly."
     />
-
     <title>Article | Pressly</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+    />
 
-    <link rel="stylesheet" href="/src/css/style.css" />
+    <link rel="stylesheet" href="./src/css/style.css" />
   </head>
 
   <body>
-    <!-- =========================================
-         HEADER
-    ========================================== -->
-
+    <!-- HEADER -->
     <header class="site-header">
       <div class="site-header__inner">
-        <a class="site-logo" href="/" aria-label="Pressly home"> PRESSLY </a>
+        <a class="site-logo" href="./" aria-label="Pressly home"> PRESSLY </a>
 
         <nav class="primary-navigation" aria-label="Primary navigation">
-          <a href="/?category=News"> News </a>
-
-          <a href="/?category=Sport"> Sport </a>
-
-          <a href="/?category=Entertainment"> Entertainment </a>
-
-          <a href="/?category=Weather"> Weather </a>
+          <a href="./?category=News">News</a>
+          <a href="./?category=Sport">Sport</a>
+          <a href="./?category=Entertainment">Entertainment</a>
+          <a href="./?category=Weather">Weather</a>
         </nav>
 
         <div class="header-actions">
@@ -57,46 +54,45 @@
           class="mobile-menu-toggle"
           type="button"
           aria-expanded="false"
-          aria-controls="search-menu"
+          aria-controls="mobile-menu"
           aria-label="Open menu"
         >
-          <span></span>
-          <span></span>
-          <span></span>
+          <span
+            class="material-symbols-outlined mobile-menu-toggle__icon mobile-menu-toggle__icon--menu"
+            aria-hidden="true"
+          >
+            menu
+          </span>
+
+          <span
+            class="material-symbols-outlined mobile-menu-toggle__icon mobile-menu-toggle__icon--close"
+            aria-hidden="true"
+          >
+            close
+          </span>
         </button>
       </div>
     </header>
 
-    <!-- =========================================
-         SEARCH / MEGA MENU
-    ========================================== -->
+    <!-- DESKTOP SEARCH / MEGA MENU -->
 
     <div id="search-menu" class="mega-menu" hidden>
       <div class="mega-menu__inner">
-        <!-- Left side -->
-
         <div class="mega-menu__topics">
-          <a class="mega-menu__latest" href="/"> Latest news </a>
+          <a class="mega-menu__latest" href="./"> Latest news </a>
 
           <section class="mega-menu__section">
             <h2>News</h2>
 
             <nav aria-label="News topics">
-              <a href="/?category=News&tag=World%20News"> World News </a>
-
-              <a href="/?category=News&tag=Local%20News"> Local News </a>
-
-              <a href="/?category=News&tag=Middle%20East"> Middle East </a>
-
-              <a href="/?category=News&tag=Europe"> Europe </a>
-
-              <a href="/?category=News&tag=Scandinavia"> Scandinavia </a>
-
-              <a href="/?category=News&tag=Politics"> Politics </a>
-
-              <a href="/?category=News&tag=Finance"> Finance </a>
-
-              <a href="/?category=News&tag=Culture"> Culture </a>
+              <a href="./?category=News&tag=World%20News"> World News </a>
+              <a href="./?category=News&tag=Local%20News"> Local News </a>
+              <a href="./?category=News&tag=Middle%20East"> Middle East </a>
+              <a href="./?category=News&tag=Europe"> Europe </a>
+              <a href="./?category=News&tag=Scandinavia"> Scandinavia </a>
+              <a href="./?category=News&tag=Politics"> Politics </a>
+              <a href="./?category=News&tag=Finance"> Finance </a>
+              <a href="./?category=News&tag=Culture"> Culture </a>
             </nav>
           </section>
 
@@ -104,15 +100,11 @@
             <h2>Sport</h2>
 
             <nav aria-label="Sport topics">
-              <a href="/?category=Sport&tag=Football"> Football </a>
-
-              <a href="/?category=Sport&tag=Ski"> Ski </a>
-
-              <a href="/?category=Sport&tag=Handball"> Handball </a>
-
-              <a href="/?category=Sport&tag=Rowing"> Rowing </a>
-
-              <a href="/?category=Sport&tag=F1"> F1 </a>
+              <a href="./?category=Sport&tag=Football"> Football </a>
+              <a href="./?category=Sport&tag=Ski"> Ski </a>
+              <a href="./?category=Sport&tag=Handball"> Handball </a>
+              <a href="./?category=Sport&tag=Rowing"> Rowing </a>
+              <a href="./?category=Sport&tag=F1"> F1 </a>
             </nav>
           </section>
 
@@ -120,27 +112,25 @@
             <h2>Entertainment</h2>
 
             <nav aria-label="Entertainment topics">
-              <a href="/?category=Entertainment&tag=Influencers">
+              <a href="./?category=Entertainment&tag=Influencers">
                 Influencers
               </a>
-
-              <a href="/?category=Entertainment&tag=TV"> TV </a>
-
-              <a href="/?category=Entertainment&tag=Series"> Series </a>
-
-              <a href="/?category=Entertainment&tag=Music"> Music </a>
-
-              <a href="/?category=Entertainment&tag=Theater"> Theater </a>
-
-              <a href="/?category=Entertainment&tag=Movies"> Movies </a>
+              <a href="./?category=Entertainment&tag=TV"> TV </a>
+              <a href="./?category=Entertainment&tag=Series"> Series </a>
+              <a href="./?category=Entertainment&tag=Music"> Music </a>
+              <a href="./?category=Entertainment&tag=Theater"> Theater </a>
+              <a href="./?category=Entertainment&tag=Movies"> Movies </a>
             </nav>
           </section>
         </div>
 
-        <!-- Right side -->
-
         <aside class="mega-menu__sidebar">
-          <form class="mega-menu__search" action="/" method="get" role="search">
+          <form
+            class="mega-menu__search"
+            action="./"
+            method="get"
+            role="search"
+          >
             <label class="visually-hidden" for="site-search">
               Search Pressly
             </label>
@@ -154,27 +144,35 @@
             />
           </form>
 
-          <div
+          <nav
             id="mega-account-navigation"
             class="mega-account-navigation"
-            role="navigation"
-            aria-label="Account and help links"
-          ></div>
+            aria-label="Additional navigation"
+          ></nav>
 
           <div class="mega-menu__utility-links">
             <a href="mailto:tip@pressly.no"> Tip us </a>
 
-            <span> Terms &amp; Conditions </span>
-
-            <span> About us </span>
+            <span>Terms &amp; Conditions</span>
+            <span>About us</span>
           </div>
         </aside>
       </div>
     </div>
 
-    <!-- =========================================
-         BREAKING NEWS
-    ========================================== -->
+    <!-- MOBILE MENU -->
+
+    <div id="mobile-menu-backdrop" class="mobile-menu-backdrop" hidden></div>
+
+    <aside id="mobile-menu" class="mobile-menu" aria-label="Mobile menu" hidden>
+      <nav
+        id="mobile-navigation"
+        class="mobile-navigation"
+        aria-label="Mobile navigation"
+      ></nav>
+    </aside>
+
+    <!-- BREAKING NEWS -->
 
     <aside class="breaking-news" aria-label="Latest news">
       <div class="breaking-news__inner">
@@ -182,19 +180,17 @@
 
         <span class="breaking-news__label"> Just now: </span>
 
-        <a id="breaking-news-link" class="breaking-news__link" href="/">
+        <a id="breaking-news-link" class="breaking-news__link" href="./">
           No breaking news yet
         </a>
       </div>
     </aside>
 
-    <!-- =========================================
-         ARTICLE PAGE
-    ========================================== -->
+    <!-- ARTICLE PAGE -->
 
     <main class="article-page">
       <div id="article-layout" class="article-layout">
-        <!-- Saved topics -->
+        <!-- SAVED TOPICS -->
 
         <aside
           id="saved-topics"
@@ -220,12 +216,12 @@
             </button>
           </div>
 
-          <a class="create-article-link" href="/create.html">
+          <a class="create-article-link" href="./create.html">
             Create New Article
           </a>
         </aside>
 
-        <!-- Main article -->
+        <!-- MAIN ARTICLE -->
 
         <article
           id="article-detail"
@@ -236,13 +232,13 @@
           <p class="page-feedback">Loading article...</p>
         </article>
 
-        <!-- Latest news -->
+        <!-- LATEST NEWS -->
 
         <aside class="latest-news" aria-labelledby="latest-news-heading">
           <div class="latest-news__header">
             <h2 id="latest-news-heading">LATEST NEWS:</h2>
 
-            <a href="mailto:tip@pressly.no"> TIP: email </a>
+            <a href="mailto:tip@pressly.no"> TIP: tip@pressly.no </a>
           </div>
 
           <div id="latest-news-list" class="latest-news__list"></div>
@@ -259,22 +255,20 @@
       </div>
     </main>
 
-    <!-- =========================================
-         FOOTER
-    ========================================== -->
+    <!-- FOOTER -->
 
     <footer class="site-footer">
       <div class="site-footer__inner">
-        <a class="site-footer__logo" href="/" aria-label="Pressly home">
+        <a class="site-footer__logo" href="./" aria-label="Pressly home">
           PRESSLY
         </a>
 
-        <a href="mailto:tip@pressly.no"> TIP: LogoTip@mail.com </a>
+        <a href="mailto:tip@pressly.no"> TIP: tip@pressly.no </a>
 
-        <p>All rights reserved</p>
+        <p>© 2026 Pressly. All rights reserved.</p>
       </div>
     </footer>
 
-    <script type="module" src="/src/js/pages/article.js"></script>
+    <script type="module" src="./src/js/pages/article.js"></script>
   </body>
 </html>
