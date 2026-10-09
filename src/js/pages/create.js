@@ -101,7 +101,7 @@ async function handleSubmit(event, session) {
     await wait(SUCCESS_REDIRECT_DELAY);
 
     window.location.assign(
-      `/article.html?id=${encodeURIComponent(publishedArticle.id)}`,
+      `./article.html?id=${encodeURIComponent(publishedArticle.id)}`,
     );
   } catch (error) {
     const isPermissionError =

@@ -295,7 +295,7 @@ function handleClearSavedTopics() {
 }
 
 function handleBrowseSavedTopics() {
-  window.location.assign('/');
+  window.location.assign('./');
 }
 
 function bindEvents() {

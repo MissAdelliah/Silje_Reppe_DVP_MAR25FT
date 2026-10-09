@@ -72,7 +72,7 @@ function formatRelativeTime(dateString) {
 }
 
 function getArticleUrl(article) {
-  return `/article.html?id=${encodeURIComponent(article.id)}`;
+  return `./article.html?id=${encodeURIComponent(article.id)}`;
 }
 
 function isTopicSaved(savedTopics, type, value) {

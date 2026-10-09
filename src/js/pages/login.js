@@ -279,7 +279,7 @@ loginForm.addEventListener('submit', async (event) => {
 
     await wait(LOGIN_REDIRECT_DELAY);
 
-    window.location.replace('/');
+    window.location.replace('./');
   } catch (error) {
     showFeedback(loginFeedback, getLoginErrorMessage(error), 'error');
 
@@ -400,7 +400,7 @@ async function init() {
     const session = await getSession();
 
     if (session) {
-      window.location.replace('/');
+      window.location.replace('./');
     }
   } catch {
     // Leave the login page usable if the
