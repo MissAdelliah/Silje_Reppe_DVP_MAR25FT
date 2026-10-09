@@ -1,72 +1,43 @@
 export function initSearchMenu() {
-  const desktopToggle = document.querySelector('#search-menu-toggle');
-  const mobileToggle = document.querySelector('#mobile-menu-toggle');
+  const toggle = document.querySelector('#search-menu-toggle');
   const menu = document.querySelector('#search-menu');
   const searchInput = document.querySelector('#site-search');
-  const toggleButtons = [desktopToggle, mobileToggle].filter(Boolean);
 
-  if (!menu || !toggleButtons.length) {
+  if (!toggle || !menu) {
     return;
   }
 
-  let lastTrigger = null;
-
-  function setExpandedState(isExpanded) {
-    toggleButtons.forEach((button) => {
-      button.setAttribute('aria-expanded', String(isExpanded));
-    });
-
-    if (mobileToggle) {
-      mobileToggle.setAttribute(
-        'aria-label',
-        isExpanded ? 'Close menu' : 'Open menu',
-      );
-    }
-  }
-
-  function openMenu(trigger) {
-    lastTrigger = trigger;
-
+  function openMenu() {
     menu.hidden = false;
-    document.body.classList.add('menu-open');
+    toggle.setAttribute('aria-expanded', 'true');
+    document.body.classList.add('search-menu-open');
 
-    setExpandedState(true);
-
-    if (trigger === desktopToggle) {
+    window.requestAnimationFrame(() => {
       searchInput?.focus();
-    }
+    });
   }
 
   function closeMenu({ restoreFocus = true } = {}) {
     menu.hidden = true;
-    document.body.classList.remove('menu-open');
+    toggle.setAttribute('aria-expanded', 'false');
+    document.body.classList.remove('search-menu-open');
 
-    setExpandedState(false);
-
-    if (restoreFocus && lastTrigger && document.contains(lastTrigger)) {
-      lastTrigger.focus();
+    if (restoreFocus) {
+      toggle.focus();
     }
-
-    lastTrigger = null;
   }
 
-  function toggleMenu(event) {
-    if (!menu.hidden) {
-      closeMenu();
+  toggle.addEventListener('click', () => {
+    if (menu.hidden) {
+      openMenu();
       return;
     }
 
-    openMenu(event.currentTarget);
-  }
-
-  toggleButtons.forEach((button) => {
-    button.addEventListener('click', toggleMenu);
+    closeMenu();
   });
 
   menu.addEventListener('click', (event) => {
-    const link = event.target.closest('a');
-
-    if (link) {
+    if (event.target.closest('a')) {
       closeMenu({
         restoreFocus: false,
       });
@@ -76,24 +47,6 @@ export function initSearchMenu() {
   document.addEventListener('keydown', (event) => {
     if (event.key === 'Escape' && !menu.hidden) {
       closeMenu();
-    }
-  });
-
-  document.addEventListener('click', (event) => {
-    if (menu.hidden) {
-      return;
-    }
-
-    const clickedInsideMenu = menu.contains(event.target);
-
-    const clickedToggle = toggleButtons.some((button) =>
-      button.contains(event.target),
-    );
-
-    if (!clickedInsideMenu && !clickedToggle) {
-      closeMenu({
-        restoreFocus: false,
-      });
     }
   });
 }

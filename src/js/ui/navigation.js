@@ -1,5 +1,12 @@
 import { getSession, logout } from '../services/auth.js';
 
+function getAppUrl(path = '') {
+  const baseUrl = import.meta.env.BASE_URL || '/';
+  const cleanPath = String(path).replace(/^\/+/, '');
+
+  return `${baseUrl}${cleanPath}`;
+}
+
 function createLink(href, label) {
   const link = document.createElement('a');
 
@@ -9,21 +16,12 @@ function createLink(href, label) {
   return link;
 }
 
-function createLabel(label) {
-  const element = document.createElement('span');
-
-  element.className = 'mega-account-navigation__label';
-  element.textContent = label;
-
-  return element;
-}
-
 function createLogoutButton() {
   const button = document.createElement('button');
 
   button.type = 'button';
-  button.dataset.logout = '';
   button.textContent = 'Log out';
+  button.dataset.logout = '';
 
   return button;
 }
@@ -36,14 +34,15 @@ function renderHeaderNavigation(container, session) {
   container.replaceChildren();
 
   if (!session) {
-    container.append(createLink('/login.html', 'Login'));
+    container.append(createLink(getAppUrl('login.html'), 'Login'));
+
     return;
   }
 
   container.append(createLogoutButton());
 }
 
-function renderMegaNavigation(container, session) {
+function renderDesktopMegaNavigation(container, session) {
   if (!container) {
     return;
   }
@@ -52,19 +51,36 @@ function renderMegaNavigation(container, session) {
 
   if (session) {
     container.append(
-      createLabel('My account'),
+      createLink(getAppUrl('create.html'), 'Create Article'),
       createLink('mailto:tip@pressly.no?subject=Pressly%20Information', 'Info'),
       createLink('mailto:tip@pressly.no?subject=Pressly%20Help', 'Help'),
-      createLink('/create.html', 'Create Article'),
     );
 
     return;
   }
 
   container.append(
-    createLink('/login.html', 'My account'),
     createLink('mailto:tip@pressly.no?subject=Pressly%20Information', 'Info'),
     createLink('mailto:tip@pressly.no?subject=Pressly%20Help', 'Help'),
+  );
+}
+
+function renderMobileNavigation(container, session) {
+  if (!container) {
+    return;
+  }
+
+  container.replaceChildren();
+
+  if (!session) {
+    container.append(createLink(getAppUrl('login.html'), 'Login'));
+
+    return;
+  }
+
+  container.append(
+    createLink(getAppUrl('create.html'), 'Create Article'),
+    createLogoutButton(),
   );
 }
 
@@ -72,12 +88,17 @@ function bindLogoutButtons() {
   const logoutButtons = document.querySelectorAll('[data-logout]');
 
   logoutButtons.forEach((button) => {
+    if (button.dataset.logoutBound === 'true') {
+      return;
+    }
+
+    button.dataset.logoutBound = 'true';
     button.addEventListener('click', async () => {
       button.disabled = true;
 
       try {
         await logout();
-        window.location.replace('/');
+        window.location.replace(getAppUrl());
       } catch {
         button.disabled = false;
       }
@@ -96,11 +117,15 @@ export async function renderNavigation(container, providedSession = undefined) {
     }
   }
 
-  const megaNavigation = document.querySelector('#mega-account-navigation');
+  const desktopMegaNavigation = document.querySelector(
+    '#mega-account-navigation',
+  );
+
+  const mobileNavigation = document.querySelector('#mobile-navigation');
 
   renderHeaderNavigation(container, session);
-  renderMegaNavigation(megaNavigation, session);
-
+  renderDesktopMegaNavigation(desktopMegaNavigation, session);
+  renderMobileNavigation(mobileNavigation, session);
   bindLogoutButtons();
 
   return session;

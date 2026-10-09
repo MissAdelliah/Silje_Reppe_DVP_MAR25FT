@@ -1,5 +1,6 @@
 import { getArticles } from '../services/articles.js';
 import { getSession } from '../services/auth.js';
+import { initMobileMenu } from '../ui/mobileMenu.js';
 
 import {
   renderArticles,
@@ -414,6 +415,7 @@ async function loadArticles() {
 
 async function init() {
   initSearchMenu();
+  initMobileMenu();
   bindEvents();
 
   await loadAuthentication();
